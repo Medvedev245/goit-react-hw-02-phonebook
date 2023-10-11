@@ -1,0 +1,14 @@
+.container {
+  width: 335px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.title,
+.contacts {
+  text-align: center;
+}
+
+.contacts {
+}
