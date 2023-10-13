@@ -1,3 +1,4 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { nanoid } from 'nanoid';
 import { Component } from 'react';
 import { ContactForm } from './ContactForm/ContactForm';
@@ -13,41 +14,44 @@ export class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    filter: {
-      name: '',
-      number: '',
-    },
+    filter: {},
   };
 
-  addContacts = name => {
-    name.id = nanoid(5);
-    this.setState(prevState => {
-      return {
-        contacts: [...prevState.contacts, name],
-      };
-    });
+  addContacts = contact => {
+    if (this.state.contacts.find(el => el.name === contact.name)) {
+      Notify.failure('Contact already exists');
+    } else {
+      Notify.success('Contact ADD');
+      this.setState(prevState => {
+        return {
+          contacts: [...prevState.contacts, { ...contact, id: nanoid(5) }],
+        };
+      });
+    }
   };
 
-  changeName = newName => {
+  changeFilter = value => {
     this.setState({
-      name: newName,
+      name: value,
     });
   };
 
-  deleteNumber = element => {
+  deleteNumber = id => {
     this.setState(prevState => ({
-      contacts: prevState.contacts.filter(el => el.id !== element),
+      contacts: prevState.contacts.filter(el => el.id !== id),
     }));
   };
 
   getVisibleItems = () => {
     const contacts = this.state.contacts;
-    const name = this.state.name;
-    if (!name) {
+    const filter = this.state.name;
+    console.log(filter);
+    console.log(contacts);
+    if (!filter) {
       return contacts;
     }
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(name.toLowerCase())
+      contact.name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
@@ -56,7 +60,7 @@ export class App extends Component {
     return (
       <div className={styles.container}>
         <h1 className={styles.title}>Phonebook</h1>
-        <ContactForm state={this.state} addContacts={this.addContacts} />
+        <ContactForm addContacts={this.addContacts} />
         <h2 className={styles.contacts}>Contacts</h2>
         <Filter state={this.state} onChangeName={this.changeName} />
         <ContactList state={visibleItems} onDelete={this.deleteNumber} />

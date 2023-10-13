@@ -1,4 +1,3 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
@@ -22,18 +21,8 @@ export const ContactForm = props => {
         }}
         validationSchema={nameSchema}
         onSubmit={(values, actions) => {
-          const name = values.name;
-          const contacts = props.state.contacts;
-          const el = contacts.some(contact =>
-            contact.name.toLowerCase().includes(name.toLowerCase())
-          );
-          if (!el) {
-            props.addContacts(values);
-            actions.resetForm();
-            Notify.success('Contact ADD');
-          } else {
-            Notify.failure('Contact already exists');
-          }
+          props.addContacts(values);
+          actions.resetForm();
         }}
       >
         <Form className={styles.form}>
