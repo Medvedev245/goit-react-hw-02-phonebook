@@ -14,7 +14,7 @@ export class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    filter: {},
+    filter: '',
   };
 
   addContacts = contact => {
@@ -30,7 +30,7 @@ export class App extends Component {
     }
   };
 
-  changeFilter = value => {
+  changeName = value => {
     this.setState({
       name: value,
     });
@@ -43,15 +43,14 @@ export class App extends Component {
   };
 
   getVisibleItems = () => {
-    const contacts = this.state.contacts;
-    const filter = this.state.name;
-    console.log(filter);
+    const { contacts, name } = this.state;
+    console.log(name);
     console.log(contacts);
-    if (!filter) {
+    if (!name) {
       return contacts;
     }
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+      contact.name.toLowerCase().includes(name.toLowerCase())
     );
   };
 
