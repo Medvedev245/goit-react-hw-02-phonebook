@@ -44,8 +44,6 @@ export class App extends Component {
 
   getVisibleItems = () => {
     const { contacts, name } = this.state;
-    console.log(name);
-    console.log(contacts);
     if (!name) {
       return contacts;
     }
